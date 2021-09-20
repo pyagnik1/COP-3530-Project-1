@@ -25,6 +25,10 @@ gatorInfo *removeID(gatorInfo *root, int gatorID);
 
 gatorInfo *removeInorder(gatorInfo *root, int NthgatorID);
 
+void searchGatorName(gatorInfo *root, char *gatorName);
+
+void searchGatorID(gatorInfo *root, int gatorID);
+
 int main()
 {
     cout << "Hello World!\n";
@@ -55,27 +59,38 @@ int main()
 
         if (strcmp(comand, "printInorder") == 0)
         {
-            /* code */
 
             printInorder(root);
         }
 
         if (strcmp(comand, "remove") == 0)
         {
-            /* code */
+
             scanf("%d", &id);
             root = removeID(root, id);
         }
 
         if (strcmp(comand, "removeInorder") == 0)
         {
-            /* code */
-
             int NthgatorID;
 
             scanf("%d", &NthgatorID);
 
             root = removeInorder(root, NthgatorID);
+        }
+
+        if (strcmp(comand, "search") == 0)
+        {
+
+            char *input;
+
+            int in;
+
+            // I need to check if the next phrase is a string or int
+            //Google it before testing
+            scanf("%s", input);
+
+            searchGatorID(root, in);
         }
     }
 }
@@ -104,4 +119,12 @@ gatorInfo *removeInorder(gatorInfo *root, int NthgatorID)
     gatorInfo *temp = root;
 
     return temp;
+}
+
+void searchGatorName(gatorInfo *root, char *gatorName)
+{
+}
+
+void searchGatorID(gatorInfo *root, int gatorID)
+{
 }
