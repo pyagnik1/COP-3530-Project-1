@@ -7,14 +7,11 @@ class gatorInfo
 {
 
     int gatorID;
-    string gatorName;
+    char* gatorName;
 
     gatorInfo *right;
     gatorInfo *left;
 
-    gatorInfo() : gatorID(0), left(nullptr), right(nullptr) {}
-    gatorInfo(int x) : gatorID(x), left(nullptr), right(nullptr) {}
-    gatorInfo(int x, gatorInfo *left, gatorInfo *right) : gatorID(x), left(left), right(right) {}
 };
 
 gatorInfo *insert(gatorInfo *root, char *gatorID, int gatorName);
@@ -95,13 +92,52 @@ int main()
     }
 }
 
-gatorInfo *insert(gatorInfo *root, char *gatorID, int gatorName)
+gatorInfo* newGatorInfo(char* gatorName,int gatorID){
+
+    gatorInfo* node = new gatorInfo();
+    node->gatorName = gatorName;
+
+    node->gatorID = gatorID;
+
+    node->left = NULL;
+
+    node->right = NULL;
+
+    return node;
+
+}
+
+gatorInfo *insert(gatorInfo *root, char *gatorName, int gatorID)
 {
 
+    //Do normal BST insertion first->
+    if(root == NULL){
+        return (newGatorInfo(gatorName,gatorID));
+
+    }
     gatorInfo *temp = root;
+
+    if(gatorID < temp->gatorID){
+
+        temp->left = insert(temp->left,gatorName,gatorID);
+    }
+
+    if(gatorID > temp->gatorID){
+
+        temp->right = insert(temp->right,gatorName,gatorID);
+    }
+
+    
+
 
     return temp;
 }
+
+
+
+
+
+
 
 void printInorder(gatorInfo *root)
 {
