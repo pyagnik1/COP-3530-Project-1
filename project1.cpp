@@ -233,6 +233,7 @@ gatorInfo *insert(gatorInfo *root, char *gatorName, int gatorID)
     
     return temp;
 }
+//http://www.uoitc.edu.iq/images/documents/informatics-institute/Competitive_exam/DataStructures.pdf
 
 void printInorder(gatorInfo *root)
 {
