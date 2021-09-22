@@ -83,9 +83,9 @@ gatorInfo *insert(gatorInfo *root, string gatorName, int gatorID)
                     
                         3   <-balance = 2
                     /
-                2   <-balance = 1       -->             2 <-balance = 1 - 1 =0
-            /                                       /         \
-        1                                       1               3
+                2   <-balance = 1       -->     2 <-balance = 1 - 1 =0
+            /                                /         \
+        1                                 1               3
 		
 	*/
     if (balanceFactor > 1 && gatorID > root->left->gatorID)
@@ -100,9 +100,9 @@ gatorInfo *insert(gatorInfo *root, string gatorName, int gatorID)
 				-->root->left->val = 2
 						3 <-balance =2
 					/
-				2	<-balance =1			-->				                2 <- balance = 1- 1 = 0
-			/															/		\
-		1															1				3
+				2	<-balance =1			-->		  2 <- balance = 1- 1 = 0
+			/									    			/		\
+		1														1				3
 	*/
 
     if (balanceFactor > 1 && gatorID < root->left->gatorID)
@@ -115,18 +115,18 @@ gatorInfo *insert(gatorInfo *root, string gatorName, int gatorID)
 		--> fix: 1. Rotae right
 			-->root->right->val = 3
 		
-			1	<- balance = -2								                   1 <- balance = -2
-				\																\
-					3 <- balance = 1		--> 				                    2	<- balance = -1
-				/																		\				
-			2																				3
+			1	<- balance = -2					 1 <- balance = -2
+				\													\
+					3 <- balance = 1		--> 	2	<- balance = -1
+				/									    				\
+			2																	3
 		-->2. Rotate left	
 			-->root->val = 2, root->right->val = 3
 		1	<-balance = -2
 			\
-				2		<- balance = -1			--> 				                    2 <- balance = 1 - 1 = 0
-					\																/		\
-						3														1				3
+				2		<- balance = -1			--> 	2 <- balance = 1 - 1 = 0
+					\													/		\
+						3											1				3
 	*/
 
     if (balanceFactor < -1 && gatorID < root->right->gatorID)
@@ -140,9 +140,9 @@ gatorInfo *insert(gatorInfo *root, string gatorName, int gatorID)
 		--> fix: Rotate 1 to left
 		1 <- balance = -2
 			\
-				2	<- balance = -1			-->			                    2 <- balance = 1 - 1 = 0
-					\													/		\
-						3											1				3
+				2	<- balance = -1			-->		2 <- balance = 1 - 1 = 0
+					\												/		\
+						3										1				3
 	*/
 
     if (balanceFactor < -1 && gatorID > root->right->gatorID)
@@ -199,12 +199,11 @@ gatorInfo *rotateRight(gatorInfo *root)
 
     /*
 	Pre rotation-->
-		root->val = 3, newParent->val = 2, grandChild = NULL
-						            root->	3
-									     /
-	                    newParent	->	2	
-							          / 	\					
-						             1		NULL	<- grandChild			
+                root->	3
+                        /
+        newParent	->	2
+                    /   	\
+                    1		NUL <- grandChild
 	*/
 
     newParent->right = root;
@@ -213,12 +212,11 @@ gatorInfo *rotateRight(gatorInfo *root)
 
     /*
 		Post rotation
-		newParent->val = 2, newParent->right->val = 3
-					newParent->	2
-										/		\
-									1				3 <-root
-												/
-											NULL <-grandChild
+      newParent->	2
+                /		\
+            1				3 <-root
+                            /
+                        NULL <-grandChild
 	*/
 
     newParent->height = max(height(newParent->right), height(newParent->left)) + 1;
@@ -236,12 +234,12 @@ gatorInfo *rotateLeft(gatorInfo *root)
     gatorInfo *grandChild = newParent->left;
 
     /*
-			Pre rotation
-                root->  	1
-                             \
-                newParent->	    2			
-                              /  \					
-            grandChild-> NULL        3				
+        Pre rotation
+        root->  	1
+                    \
+    newParent->	    2
+                  /  \
+grandChild-> NULL      3
 		*/
 
     newParent->left = root;
@@ -250,10 +248,10 @@ gatorInfo *rotateLeft(gatorInfo *root)
 
     /*
 		Post rotation
-	                newParent->	2
-	                        /		\
-	            root->	1               3
-	                    \
+      newParent->	2
+                /		\
+      root->	1        3
+	                      \
 	                    NULL <- grandChild
 	*/
 
