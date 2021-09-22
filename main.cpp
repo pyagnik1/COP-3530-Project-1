@@ -74,15 +74,11 @@ gatorInfo *insert(gatorInfo *root, string gatorName, int gatorID)
 	-->Left Right case
 		--> fix: 1.Rotate left
 				-->root->val = 1, root->left->val = 2 
-
                 3 <- balance = 2                    3   <-balance = 2
             /                                   /
-
             1   <- balance =1   -->         2   <-balance = 1
-
             \                              /
                 2                       1   
-
         -->2. Rotate right
                     
                         3   <-balance = 2
@@ -91,8 +87,6 @@ gatorInfo *insert(gatorInfo *root, string gatorName, int gatorID)
             /                                       /         \
         1                                       1               3
 		
-
-
 	*/
     if (balanceFactor > 1 && gatorID > root->left->gatorID)
     {
@@ -104,13 +98,11 @@ gatorInfo *insert(gatorInfo *root, string gatorName, int gatorID)
 	-->Left Left case
 		--> fix: Rotate right
 				-->root->left->val = 2
-
 						3 <-balance =2
 					/
 				2	<-balance =1			-->				                2 <- balance = 1- 1 = 0
 			/															/		\
 		1															1				3
-
 	*/
 
     if (balanceFactor > 1 && gatorID < root->left->gatorID)
@@ -123,23 +115,18 @@ gatorInfo *insert(gatorInfo *root, string gatorName, int gatorID)
 		--> fix: 1. Rotae right
 			-->root->right->val = 3
 		
-
-
 			1	<- balance = -2								                   1 <- balance = -2
 				\																\
 					3 <- balance = 1		--> 				                    2	<- balance = -1
 				/																		\				
 			2																				3
-
 		-->2. Rotate left	
 			-->root->val = 2, root->right->val = 3
-
 		1	<-balance = -2
 			\
 				2		<- balance = -1			--> 				                    2 <- balance = 1 - 1 = 0
 					\																/		\
 						3														1				3
-
 	*/
 
     if (balanceFactor < -1 && gatorID < root->right->gatorID)
@@ -151,14 +138,11 @@ gatorInfo *insert(gatorInfo *root, string gatorName, int gatorID)
     /*
 	--> Right Right case
 		--> fix: Rotate 1 to left
-
 		1 <- balance = -2
 			\
-				2	<- balance = -1			-->			2 <- balance = 1 - 1 = 0
+				2	<- balance = -1			-->			                    2 <- balance = 1 - 1 = 0
 					\													/		\
 						3											1				3
-
-
 	*/
 
     if (balanceFactor < -1 && gatorID > root->right->gatorID)
@@ -216,13 +200,11 @@ gatorInfo *rotateRight(gatorInfo *root)
     /*
 	Pre rotation-->
 		root->val = 3, newParent->val = 2, grandChild = NULL
-
-						root->	3
-									/
-	newParent	->	2	
-							/		\					
-						1			NULL	<- grandChild			
-
+						            root->	3
+									     /
+	                    newParent	->	2	
+							          / 	\					
+						             1		NULL	<- grandChild			
 	*/
 
     newParent->right = root;
@@ -231,15 +213,12 @@ gatorInfo *rotateRight(gatorInfo *root)
 
     /*
 		Post rotation
-
 		newParent->val = 2, newParent->right->val = 3
-
-					newParent->	2
+					         newParent->	2
 										/		\
 									1				3 <-root
 												/
 											NULL <-grandChild
-
 	*/
 
     newParent->height = max(height(newParent->right), height(newParent->left)) + 1;
@@ -258,13 +237,11 @@ gatorInfo *rotateLeft(gatorInfo *root)
 
     /*
 			Pre rotation
-
                 root->  	1
                              \
                 newParent->	    2			
                               /  \					
             grandChild-> NULL        3				
-
 		*/
 
     newParent->left = root;
@@ -273,13 +250,11 @@ gatorInfo *rotateLeft(gatorInfo *root)
 
     /*
 		Post rotation
-
 	                newParent->	2
 	                        /		\
 	            root->	1               3
 	                    \
 	                    NULL <- grandChild
-
 	*/
 
     newParent->height = max(height(newParent->right), height(newParent->left)) + 1;
