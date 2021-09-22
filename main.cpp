@@ -214,7 +214,7 @@ gatorInfo *rotateRight(gatorInfo *root)
     /*
 		Post rotation
 		newParent->val = 2, newParent->right->val = 3
-					         newParent->	2
+					newParent->	2
 										/		\
 									1				3 <-root
 												/
