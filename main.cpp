@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
+#include <string>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ gatorInfo* balanceTree(gatorInfo* root, int gatorID);
 gatorInfo* removeGatorID(gatorInfo* root, int gatorID);
 gatorInfo* findMin(gatorInfo* node);
 int searchGatorID(gatorInfo* root,int gatorID);
+int searchGatorName(gatorInfo* root, string gatorName);
 
 
 
@@ -45,13 +47,19 @@ int main(){
 	preOrder(root);
 	//cout<<"before deletion\n";
 
-	root = removeGatorID(root, 45674567);
+	root = removeGatorID(root, 87878787);
 
 	preOrder(root);
 
 	int val = searchGatorID(root, 45674567);
 
 	if(val == 0){
+		cout<<"unsuccessful\n";
+	}
+
+	int val2 = searchGatorName(root, "Brandon");
+
+	if(val2 == 0){
 		cout<<"unsuccessful\n";
 	}
 	
@@ -339,7 +347,7 @@ gatorInfo* removeGatorID(gatorInfo* root, int gatorID){
 
  
  if(root == NULL){
-	 cout<<"Item not found\n";
+	 cout<<"Item was root\n";
 	 return root;
  }
 
@@ -411,6 +419,18 @@ int searchGatorID(gatorInfo* root,int gatorID){
 	}
 
 	return 0;
+}
 
+int searchGatorName(gatorInfo* root, string gatorName){
 
+	if(gatorName == root->gatorName){
+		cout<<"successful\n";
+		return 1;
+	}
+
+	searchGatorName(root->right, gatorName);
+
+	searchGatorName(root->left, gatorName);
+
+	return 0;
 }
