@@ -25,12 +25,14 @@ int max(int x,int y);
 int balance(gatorInfo* root);
 gatorInfo* rotateRight(gatorInfo* root);
 gatorInfo* rotateLeft(gatorInfo* root);
-void preOrder(gatorInfo* root);
 gatorInfo* balanceTree(gatorInfo* root, int gatorID);
 gatorInfo* removeGatorID(gatorInfo* root, int gatorID);
 gatorInfo* findMin(gatorInfo* node);
 int searchGatorID(gatorInfo* root,int gatorID);
 int searchGatorName(gatorInfo* root, string gatorName);
+void printInorder(gatorInfo* root);
+void printPreorder(gatorInfo* root);
+void printPostorder(gatorInfo* root);
 
 
 
@@ -44,12 +46,12 @@ int main(){
 	root = insert(root,"Brian" ,35455565);
 	root = insert(root,"Briana", 87878787);
 	root = insert(root,"Bella" ,95462138);
-	preOrder(root);
+	printPreorder(root);
 	//cout<<"before deletion\n";
 
 	root = removeGatorID(root, 87878787);
 
-	preOrder(root);
+	printPreorder(root);
 
 	int val = searchGatorID(root, 45674567);
 
@@ -326,19 +328,6 @@ gatorInfo* rotateLeft(gatorInfo* root){
 
 }
 
-void preOrder(gatorInfo* root){
-	if(root == NULL){
-		cout<<"\n";
-		return;
-	}
-
-	preOrder(root->left);
-
-	cout<<root->gatorName;
-
-	preOrder(root->right);
-}
-
 
 /*
 
@@ -433,4 +422,37 @@ int searchGatorName(gatorInfo* root, string gatorName){
 	searchGatorName(root->left, gatorName);
 
 	return 0;
+}
+
+void printInorder(gatorInfo* root){
+	if(root != NULL && root->gatorID != 0){
+
+		printInorder(root->left);
+		cout<<root->gatorName << " "<<root->gatorID<<"\n";
+		printInorder(root->right);
+	}
+}
+
+void printPreorder(gatorInfo* root){
+	if(root != NULL && root->gatorID != 0){
+
+		cout<<root->gatorName << " "<<root->gatorID<<"\n";
+
+		printPreorder(root->left);
+
+		printPreorder(root->right);
+	}
+}
+
+void printPostorder(gatorInfo* root){
+
+	if(root != NULL && root->gatorID != 0){
+
+		printPostorder(root->left);
+
+		printPostorder(root->right);
+
+		cout<<root->gatorName << " "<<root->gatorID<<"\n";
+		
+	}
 }
