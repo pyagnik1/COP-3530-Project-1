@@ -28,6 +28,7 @@ void preOrder(gatorInfo* root);
 gatorInfo* balanceTree(gatorInfo* root, int gatorID);
 gatorInfo* removeGatorID(gatorInfo* root, int gatorID);
 gatorInfo* findMin(gatorInfo* node);
+int searchGatorID(gatorInfo* root,int gatorID);
 
 
 
@@ -42,17 +43,18 @@ int main(){
 	root = insert(root,"Briana", 87878787);
 	root = insert(root,"Bella" ,95462138);
 	preOrder(root);
-	cout<<"\n";
+	//cout<<"before deletion\n";
 
 	root = removeGatorID(root, 45674567);
 
-
-	
-
-
 	preOrder(root);
 
-	cout<<"\n";
+	int val = searchGatorID(root, 45674567);
+
+	if(val == 0){
+		cout<<"unsuccessful\n";
+	}
+	
 }
 
 
@@ -318,12 +320,13 @@ gatorInfo* rotateLeft(gatorInfo* root){
 
 void preOrder(gatorInfo* root){
 	if(root == NULL){
+		cout<<"\n";
 		return;
 	}
 
 	preOrder(root->left);
 
-	cout<<root->gatorName << "\n";
+	cout<<root->gatorName;
 
 	preOrder(root->right);
 }
@@ -334,67 +337,43 @@ void preOrder(gatorInfo* root){
 */
 gatorInfo* removeGatorID(gatorInfo* root, int gatorID){
 
-// STEP 1: PERFORM STANDARD BST DELETE
-    if (root == NULL)
-        return root;
  
-    // If the key to be deleted is smaller
-    // than the root's key, then it lies
-    // in left subtree
-    if ( gatorID < root->gatorID )
-        root->left = removeGatorID(root->left, gatorID);
- 
-    // If the key to be deleted is greater
-    // than the root's key, then it lies
-    // in right subtree
-    else if( gatorID > root->gatorID )
-        root->right = removeGatorID(root->right, gatorID);
- 
-    // if key is same as root's key, then
-    // This is the node to be deleted
-    else
-    {
-        // node with only one child or no child
-        if( (root->left == NULL) ||
-            (root->right == NULL) )
-        {
-            gatorInfo *temp = root->left ?
-                         root->left :
-                         root->right;
- 
-            // No child case
-            if (temp == NULL)
-            {
-                temp = root;
-                root = NULL;
-            }
-            else // One child case
-            *root = *temp; // Copy the contents of
-                           // the non-empty child
-            free(temp);
-        }
-        else
-        {
-            // node with two children: Get the inorder
-            // successor (smallest in the right subtree)
-            gatorInfo* temp = findMin(root->right);
- 
-            // Copy the inorder successor's
-            // data to this node
-            root->gatorID = temp->gatorID;
- 
-            // Delete the inorder successor
-            root->right = removeGatorID(root->right,
-                                     temp->gatorID);
-        }
-    }
- 
-    // If the tree had only one node
-    // then return
-    if (root == NULL)
-    return root;
- 
- 
+ if(root == NULL){
+	 cout<<"Item not found\n";
+	 return root;
+ }
+
+ if(gatorID < root->gatorID){
+	 root->left = removeGatorID(root->left, gatorID);
+
+ }
+
+ if(gatorID > root->gatorID){
+	 root->right = removeGatorID(root->right, gatorID);
+ }
+
+ else{
+	 if(root->left == NULL){
+		 gatorInfo* newChild = new class gatorInfo;
+		 newChild = root->right;
+		 delete root;
+	 }
+
+	 if(root->right == NULL){
+		 gatorInfo* newChild = new class gatorInfo;
+		 newChild = root->left;
+		 delete root;
+	 }
+
+
+	 if(root->right != NULL && root->left != NULL){
+		 gatorInfo* newChild = new class gatorInfo;
+
+		 newChild = findMin(root->right);
+		 root->right = removeGatorID(root->right, gatorID);
+	 }
+ }
+
 	root->height = max(height(root->right),height(root->left)) + 1;
 
 	root = balanceTree(root, gatorID);
@@ -402,6 +381,9 @@ gatorInfo* removeGatorID(gatorInfo* root, int gatorID){
 	
 	return root;
 }
+
+
+
 
 gatorInfo* findMin(gatorInfo* node)
 {
@@ -412,4 +394,23 @@ gatorInfo* findMin(gatorInfo* node)
         current = current->left;
  
     return current;
+}
+
+
+int searchGatorID(gatorInfo* root,int gatorID){
+	if(root->gatorID == gatorID){
+		cout<<"successful\n";
+		return 1;
+	}
+	if(gatorID < root->gatorID){
+		searchGatorID(root->left, gatorID);
+	}
+
+	if(gatorID > root->gatorID){
+		searchGatorID(root->right,gatorID);
+	}
+
+	return 0;
+
+
 }
