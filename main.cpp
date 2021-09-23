@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <string>
+#include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -28,42 +30,100 @@ gatorInfo* rotateLeft(gatorInfo* root);
 gatorInfo* balanceTree(gatorInfo* root, int gatorID);
 gatorInfo* removeGatorID(gatorInfo* root, int gatorID);
 gatorInfo* findMin(gatorInfo* node);
-int searchGatorID(gatorInfo* root,int gatorID);
-int searchGatorName(gatorInfo* root, string gatorName);
+void searchGatorID(gatorInfo* root,int gatorID);
+void searchGatorName(gatorInfo* root, string gatorName);
 void printInorder(gatorInfo* root);
 void printPreorder(gatorInfo* root);
 void printPostorder(gatorInfo* root);
 
-
+bool isNumber(const string& str)
+{
+    for (char const &c : str) {
+        if (std::isdigit(c) == 0) return false;
+    }
+    return true;
+}
 
 
 
 int main(){
 
+	int iter = 0;
+
+	cin>>iter;
+
 	gatorInfo* root = NULL;
 
-	root = insert(root,"Brandon",45674567);
-	root = insert(root,"Brian" ,35455565);
-	root = insert(root,"Briana", 87878787);
-	root = insert(root,"Bella" ,95462138);
-	printPreorder(root);
-	//cout<<"before deletion\n";
+	for(int i =0; i<iter; i++){
 
-	root = removeGatorID(root, 87878787);
+		string comand;
+		cin>>comand;
 
-	printPreorder(root);
+		if(comand == "search"){
 
-	int val = searchGatorID(root, 45674567);
+			string valToSearch;
 
-	if(val == 0){
-		cout<<"unsuccessful\n";
+			cin>>valToSearch;
+
+			// removes double quotes from string
+			valToSearch.erase(remove(valToSearch.begin(),valToSearch.end(),'\"'),valToSearch.end());
+
+			if(isNumber(valToSearch)){
+				//convert string to int
+				stringstream ss; 
+				int gatorID = 0;
+				ss << valToSearch;
+				ss >> gatorID;
+
+				searchGatorID(root,gatorID);
+
+			}
+
+			else{
+				searchGatorName(root,valToSearch);
+			}
+
+		}
+
+		if(comand == "insert"){
+
+			string gatorName;
+			int gatorID = 0;
+
+			cin>> gatorName;
+			cin>> gatorID;
+
+			gatorName.erase(remove(gatorName.begin(),gatorName.end(),'\"'),gatorName.end());
+
+			root = insert(root,gatorName,gatorID);
+
+			
+		}
+
+		if(comand == "remove"){
+			int gatorID =0;
+			cin>> gatorID;
+
+			root = removeGatorID(root,gatorID);
+		}
+
+		if(comand == "printInorder"){
+			printInorder(root);
+			cout<<"\n";
+		}
+
+		if(comand == "printPostorder"){
+			printPostorder(root);
+			cout<<"\n";
+		}
+
+		if(comand == "printPreorder"){
+			printPreorder(root);
+			cout<<"\n";
+		}
+
 	}
 
-	int val2 = searchGatorName(root, "Brandon");
-
-	if(val2 == 0){
-		cout<<"unsuccessful\n";
-	}
 	
 }
 
@@ -74,11 +134,12 @@ int main(){
 
 
 
-
+//The inspiration to create a seprate balance function came from weiss book page # 155
 gatorInfo* insert(gatorInfo* root, string gatorName, int gatorID){
 
 
 	if(root == NULL){
+		cout<<"successful\n";
 		return newGatorInfo(gatorName, gatorID);
 	}
 
@@ -192,11 +253,6 @@ gatorInfo* balanceTree(gatorInfo* root, int gatorID){
 
 
 
-
-
-
-
-
 gatorInfo* newGatorInfo(string gatorName,int gatorID){
 
 	gatorInfo* node = new class gatorInfo;
@@ -214,12 +270,11 @@ gatorInfo* newGatorInfo(string gatorName,int gatorID){
 
 
 
-
 //the psudo code comes from weisse book page 154
+
 int height(gatorInfo* root){
 	return root == NULL ? 0: root->height;
 }
-
 
 
 
@@ -229,7 +284,7 @@ int max(int x,int y){
 
 
 
-
+//Since balance function is used multiple times I created a saprete functino, psudo code come from slack project discussion
 int balance(gatorInfo* root){
 	if(root == NULL){
 		return 0;
@@ -243,6 +298,7 @@ int balance(gatorInfo* root){
 
 
 
+//The variable names for rotateRight and rotateLeft function were inspired by Prof. Resch slides
 
 gatorInfo* rotateRight(gatorInfo* root){
 
@@ -283,12 +339,6 @@ gatorInfo* rotateRight(gatorInfo* root){
 }
 
 
-
-
-
-
-
-
 gatorInfo* rotateLeft(gatorInfo* root){
 
 
@@ -325,18 +375,15 @@ gatorInfo* rotateLeft(gatorInfo* root){
 
 	return newParent;
 
-
 }
 
 
-/*
-
-*/
+// Psudo code used for remove functino comes weiss book page # 157
 gatorInfo* removeGatorID(gatorInfo* root, int gatorID){
 
  
  if(root == NULL){
-	 cout<<"Item was root\n";
+	 cout<<"\nsuccessful\n";
 	 return root;
  }
 
@@ -381,23 +428,23 @@ gatorInfo* removeGatorID(gatorInfo* root, int gatorID){
 
 
 
-
-gatorInfo* findMin(gatorInfo* node)
+// Psudo code for findMin comes from CLRS book page # 291
+gatorInfo* findMin(gatorInfo* root)
 {
-    gatorInfo* current = node;
- 
-    /* loop down to find the leftmost leaf */
-    while (current->left != NULL)
-        current = current->left;
- 
-    return current;
+    while(root->left != NULL){
+			root = root->left;
+		}
+
+		return root;
 }
 
 
-int searchGatorID(gatorInfo* root,int gatorID){
+// Used the CLRS to learn the how to recursively find an item in the Trees
+//The psudo code is on page # 288
+void searchGatorID(gatorInfo* root,int gatorID){
 	if(root->gatorID == gatorID){
 		cout<<"successful\n";
-		return 1;
+		
 	}
 	if(gatorID < root->gatorID){
 		searchGatorID(root->left, gatorID);
@@ -407,28 +454,34 @@ int searchGatorID(gatorInfo* root,int gatorID){
 		searchGatorID(root->right,gatorID);
 	}
 
-	return 0;
+	if(root == NULL){
+		cout<<"unsuccessful\n";
+	}
 }
 
-int searchGatorName(gatorInfo* root, string gatorName){
+void searchGatorName(gatorInfo* root, string gatorName){
 
 	if(gatorName == root->gatorName){
 		cout<<"successful\n";
-		return 1;
+		
 	}
 
 	searchGatorName(root->right, gatorName);
 
 	searchGatorName(root->left, gatorName);
 
-	return 0;
+	if(root == NULL){
+		cout<<"unsuccessful\n";
+	}
 }
 
+
+//I used psudo code from Prof. Resch module 3 slides set 2 slide # 3
 void printInorder(gatorInfo* root){
 	if(root != NULL && root->gatorID != 0){
 
 		printInorder(root->left);
-		cout<<root->gatorName << " "<<root->gatorID<<"\n";
+		cout<<root->gatorName << " , ";
 		printInorder(root->right);
 	}
 }
@@ -436,7 +489,7 @@ void printInorder(gatorInfo* root){
 void printPreorder(gatorInfo* root){
 	if(root != NULL && root->gatorID != 0){
 
-		cout<<root->gatorName << " "<<root->gatorID<<"\n";
+		cout<<root->gatorName << " , ";
 
 		printPreorder(root->left);
 
@@ -446,14 +499,16 @@ void printPreorder(gatorInfo* root){
 
 void printPostorder(gatorInfo* root){
 
+
 	if(root != NULL && root->gatorID != 0){
 
 		printPostorder(root->left);
 
 		printPostorder(root->right);
 
-		cout<<root->gatorName << " "<<root->gatorID<<"\n";
+		cout<<root->gatorName;
 		
 	}
+	
 } 
 
