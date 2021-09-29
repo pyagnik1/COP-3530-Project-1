@@ -3,13 +3,11 @@
 #include <stdio.h>
 #include <string>
 #include <queue>
-
 using namespace std;
 
 static const int IMBALANCE_THRESHHOLD = 1;
 
-class gatorInfo
-{
+class gatorInfo{
     // The class is based on Prof. Aman Trees-3.pdf
     public:
     int gatorID;
@@ -19,6 +17,7 @@ class gatorInfo
     gatorInfo *left;
 };
 
+//Function Prototypes.
 gatorInfo* insert(gatorInfo* root, string gatorName, int gatorID);
 gatorInfo* newGatorInfo(string gatorName,int gatorID);
 int height(gatorInfo* root);
@@ -27,7 +26,6 @@ int balance(gatorInfo* root);
 gatorInfo* rotateRight(gatorInfo* root);
 gatorInfo* rotateLeft(gatorInfo* root);
 gatorInfo* balanceTree(gatorInfo* root, int gatorID);
-//redefine remove function
 gatorInfo* removeGatorID(gatorInfo* root, int gatorID);
 gatorInfo* findMin(gatorInfo* node);
 void search(gatorInfo* root, int gatorID, gatorInfo* parent);
@@ -35,12 +33,8 @@ int searchGatorName(gatorInfo* root, string gatorName);
 void printInorder(gatorInfo* root);
 void printPreorder(gatorInfo* root);
 void printPostorder(gatorInfo* root);
-//redefine level and n remove 
 void levele(gatorInfo* node);
 void NthInorder(gatorInfo* node, int n);
-
-
-
 
 int main(){
 
@@ -53,12 +47,8 @@ int main(){
 	printPreorder(root);
 
 	cout<<"\n";
-
 	printPreorder(root);
-
 	search(root, 007, NULL);
-
-	
 
 	int val2 = searchGatorName(root, "Brandon");
 
@@ -69,32 +59,16 @@ int main(){
 		cout<<"successful in main val2\n";
 	}
 
-
 	int level = max(height(root->right),height(root->left));
 
 	levele(root);
-
 	NthInorder(root,2);
-
 	printPreorder(root);
-		
-
 		//buid cin menue
 
-	
-	
 }
 
-
-
-
-
-
-
-
-
 gatorInfo* insert(gatorInfo* root, string gatorName, int gatorID){
-
 
 	if(root == NULL){
 		return newGatorInfo(gatorName, gatorID);
@@ -115,13 +89,10 @@ gatorInfo* insert(gatorInfo* root, string gatorName, int gatorID){
 	}
 
 	root->height = max(height(root->right),height(root->left)) + 1;
-
 	root = balanceTree(root,gatorID);
 
 	return root;
 }
-
-
 
 //I made a saprete balanceTree function so I can reuse it in remove function
 gatorInfo* balanceTree(gatorInfo* root, int gatorID){
@@ -203,70 +174,39 @@ gatorInfo* balanceTree(gatorInfo* root, int gatorID){
 	if(balanceFactor < -1 && gatorID > root->right->gatorID){
 		return rotateLeft(root);
 	}
-
 	return root;
 }
-
-
-
-
-
-
-
-
 
 gatorInfo* newGatorInfo(string gatorName,int gatorID){
 
 		gatorInfo* node = new class gatorInfo;
-
 		node->gatorName = gatorName;
-
 		node->gatorID = gatorID;
-
 		node->left = NULL;
-
 		node->right = NULL;
 
 		return node;
 	}
-
-
-
 
 //the psudo code comes from weisse book page 154
 int height(gatorInfo* root){
 	return root == NULL ? 0: root->height;
 }
 
-
-
-
 int max(int x,int y){
 	return (x>y) ? x:y;
 }
-
-
-
 
 int balance(gatorInfo* root){
 	if(root == NULL){
 		return 0;
 	}
-
 	return height(root->left) - height(root->right);
 }
 
-
-
-
-
-
-
 gatorInfo* rotateRight(gatorInfo* root){
 
-	
 	gatorInfo* newParent = root->left;
-
 	gatorInfo* grandChild = newParent->right;
 
 	/*
@@ -280,7 +220,6 @@ gatorInfo* rotateRight(gatorInfo* root){
 	*/
 
 	newParent->right = root;
-
 	root->left = grandChild;
 
 	/*
@@ -294,25 +233,14 @@ gatorInfo* rotateRight(gatorInfo* root){
 	*/
 
 	newParent->height = max(height(newParent->right),height(newParent->left)) +1;
-
 	root->height = max(height(root->right),height(root->left)) + 1;
 	
 	return newParent;
 }
 
-
-
-
-
-
-
-
 gatorInfo* rotateLeft(gatorInfo* root){
 
-
-
 	gatorInfo* newParent = root->right;
-
 	gatorInfo* grandChild = newParent->left;
 
 		/*
@@ -325,7 +253,6 @@ gatorInfo* rotateLeft(gatorInfo* root){
 		*/
 
 	newParent->left = root;
-
 	root->right = grandChild;
 
 	/*
@@ -338,159 +265,124 @@ gatorInfo* rotateLeft(gatorInfo* root){
 	*/
 
 	newParent->height = max(height(newParent->right),height(newParent->left)) +1;
-
 	root->height = max(height(root->right),height(root->left)) + 1;
 
 	return newParent;
 
-
 }
-
 
 /*
 */
 gatorInfo* removeGatorID(gatorInfo* root, int gatorID){
 
-		if (root == NULL){
-      return root;
-		}
+	if (root == NULL){
+        return root;
+	}
  
-    
-  	if ( gatorID < root->gatorID ){
-     root->left = removeGatorID(root->left, gatorID);
-		}
+  	if (gatorID < root->gatorID){
+        root->left = removeGatorID(root->left, gatorID);
+	}
  
   
-    if( gatorID > root->gatorID ){
-     root->right = removeGatorID(root->right, gatorID);
-		}
-
-      
-    if( (root->left == NULL) && (root->right != NULL) )
-      {
-        gatorInfo *temp = root->right;
- 
-            
-      	if (temp == NULL)
-        {
-          temp = root;
-          root = NULL;
-        }
-        else{ 
-       	 *root = *temp; 
-      		free(temp);
-				}
-      }
-
-			if( (root->left != NULL) && (root->right == NULL) )
-      {
-        gatorInfo *temp = root->left;
- 
-            
-      if (temp == NULL)
-      {
-        temp = root;
-        root = NULL;
-      }
-      else {
-      	*root = *temp; 
-      	free(temp);
-			}
-    }
-
-		if((root->right == NULL) && (root->left != NULL)){
-			gatorInfo* temp = root->left;
-
-			if (temp == NULL)
-      {
-        temp = root;
-        root = NULL;
-      }
-      else {
-        *root = *temp; 
-        free(temp);
-			}
-
-		}
-				
-    if(root->right != NULL && root->left != NULL)
-    {
-            
-      gatorInfo* temp = findMin(root->right);
- 
-            
-      root->gatorID = temp->gatorID;
- 
-           
-      root->right = removeGatorID(root->right,temp->gatorID);
-    }
-    
-		root->height = max(height(root->right),height(root->left)) + 1;
-
-		root = balanceTree(root, gatorID);
-
-	
-		return root;
+    if(gatorID > root->gatorID){
+        root->right = removeGatorID(root->right, gatorID);
 	}
 
+    if((root->left == NULL) && (root->right != NULL)){
+        
+        gatorInfo *temp = root->right;
+            
+      	if (temp == NULL){
+          temp = root;
+          root = NULL;
+        }else{ 
+       	    *root = *temp; 
+      	    free(temp);
+		}
+    }
 
-
-
-gatorInfo* findMin(gatorInfo* node)
-{
-    gatorInfo* current = node;
+	if((root->left != NULL) && (root->right == NULL)){
+        gatorInfo *temp = root->left;
  
+        if(temp == NULL){
+            temp = root;
+            root = NULL;
+        }else{
+      	    *root = *temp; 
+      	    free(temp);
+		}
+    }
+
+	if((root->right == NULL) && (root->left != NULL)){
+		gatorInfo* temp = root->left;
+
+		if (temp == NULL){
+            temp = root;
+            root = NULL;
+        }else{
+            *root = *temp; 
+            free(temp);
+		}
+
+	}
+				
+    if(root->right != NULL && root->left != NULL){
+        gatorInfo* temp = findMin(root->right);
+        root->gatorID = temp->gatorID;
+        root->right = removeGatorID(root->right,temp->gatorID);
+    }
+    
+	root->height = max(height(root->right),height(root->left)) + 1;
+	root = balanceTree(root, gatorID);
+
+	return root;
+}
+
+gatorInfo* findMin(gatorInfo* node){
+    
+    gatorInfo* current = node;
     /* loop down to find the leftmost leaf */
     while (current->left != NULL)
         current = current->left;
  
     return current;
+
 }
 
-
-void search(gatorInfo* root, int gatorID, gatorInfo* parent)
-{
+void search(gatorInfo* root, int gatorID, gatorInfo* parent){
 	
-    
-    if (root == nullptr)
-    {
-      cout << "unsuccessful\n";
-      return;
+    if (root == nullptr){
+        cout << "unsuccessful\n";
+        return;
     }
  
-    
-    if (root->gatorID == gatorID)
-    {
-      cout << "successful\n";
+    if (root->gatorID == gatorID){
+        cout << "successful\n";
+        return;
+	}
  
-      return;
-		}
- 
-    if (gatorID < root->gatorID) {
+    if (gatorID < root->gatorID){
       return search(root->left, gatorID, root);
     }
  
     return search(root->right, gatorID, root);
 }
 
-
 int searchGatorName(gatorInfo* root, string gatorName){
 
-		if(gatorName == root->gatorName){
-			cout<<"successful\n";
-			return 1;
-		}
-
-		searchGatorName(root->right, gatorName);
-
-		searchGatorName(root->left, gatorName);
-
-		return 0;
+	if(gatorName == root->gatorName){
+		cout<<"successful\n";
+		return 1;
 	}
+
+	searchGatorName(root->right, gatorName);
+	searchGatorName(root->left, gatorName);
+
+	return 0;
+}
 
 void printInorder(gatorInfo* root){
 	if(root != NULL && root->gatorID != 0){
-
 		printInorder(root->left);
 		cout<<root->gatorName << " "<<root->gatorID<<"\n";
 		printInorder(root->right);
@@ -499,72 +391,52 @@ void printInorder(gatorInfo* root){
 
 void printPreorder(gatorInfo* root){
 	if(root != NULL && root->gatorID != 0){
-
 		cout<<root->gatorName << " "<<root->gatorID<<"\n";
-
 		printPreorder(root->left);
-
 		printPreorder(root->right);
 	}
 }
 
 void printPostorder(gatorInfo* root){
-
 	if(root != NULL && root->gatorID != 0){
-
 		printPostorder(root->left);
-
 		printPostorder(root->right);
-
 		cout<<root->gatorName << " "<<root->gatorID<<"\n";
-		
 	}
 }
 
-
-void levele(gatorInfo* root)
-{
-    if (!root)
-        return;
+void levele(gatorInfo* root){
+    if (!root) return;
  
     // queue to hold tree node with level
     queue<pair<gatorInfo*, int> > q;
- 
-    q.push({root, 1}); // let root node be at level 1
- 
+    q.push({root, 1}); // let root node be at level 1 
     pair<gatorInfo*, int> p;
  
     // Do level Order Traversal of tree
     while (!q.empty()) {
         p = q.front();
-        q.pop();
- 
- 
+        q.pop(); 
         if (p.first->left)
             q.push({ p.first->left, p.second + 1 });
         if (p.first->right)
             q.push({ p.first->right, p.second + 1 });
     }
-		cout << p.second << "\n";
+	cout << p.second << "\n";
 }
 
-
-void NthInorder(gatorInfo* node, int n)
-{
+void NthInorder(gatorInfo* node, int n){
     static int count = 0;
     if (node == NULL)
         return;
- 
+
     if (count <= n) {
- 
         /* first recur on left child */
         NthInorder(node->left, n);
         count++;
- 
         // when count = n then print element
         if (count == n)
-            removeGatorID(node, node->gatorID);
- 
+            removeGatorID(node, node->gatorID); 
         /* now recur on right child */
         NthInorder(node->right, n);
     }
